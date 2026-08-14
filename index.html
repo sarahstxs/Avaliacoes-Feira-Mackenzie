@@ -178,23 +178,19 @@ submitEvaluation() {
 
                 // Envio via Fetch API (Sem o 'no-cors' para podermos ler a resposta)
                 fetch(finalUrl, {
-                    method: 'POST'
+                    method: 'GET'
                 })
-                .then(response => response.json()) // Transforma a resposta do Google em um objeto legível
+                .then(response => response.json())
                 .then(data => {
-                    // O Google Sheets respondeu que é duplicado
                     if (data.result === 'duplicate_ignored') {
                         alert("Aviso: O e-mail informado já enviou uma avaliação para esta turma. Não é possível avaliar duas vezes!");
                         btn.innerText = "Enviar Avaliação";
                         btn.disabled = false;
                     } 
-                    // O Google Sheets respondeu que salvou com sucesso
                     else if (data.result === 'success') {
                         navigation.showScreen('screen-success', 'Avaliação Enviada');
                         btn.innerText = "Enviar Avaliação";
                         btn.disabled = false;
-                        
-                        // Limpa os campos para a próxima avaliação
                         document.getElementById('user-email').value = ''; 
                         document.getElementById('comment').value = ''; 
                     } 
