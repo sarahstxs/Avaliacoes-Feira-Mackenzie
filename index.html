@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação de Apresentações</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ========================================== -->
+    <!-- ESTRUTURA HTML                             -->
+    <!-- ========================================== -->
+
+    <header>
+        <h1>Avaliação de Apresentações</h1>
+        <p id="header-subtitle">Selecione o nível de ensino para começar</p>
+    </header>
+
+    <!-- TELA 1: NÍVEIS DE ENSINO -->
+    <main id="screen-levels" class="screen active">
+        <div class="grid-cards" id="levels-container">
+            <!-- Níveis renderizados dinamicamente pelo JS -->
+        </div>
+    </main>
+
+    <!-- TELA 2: SALAS/TURMAS -->
+    <main id="screen-classes" class="screen">
+        <button class="back-btn" onclick="navigation.goBackToLevels()">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Voltar para Níveis
+        </button>
+        <div class="grid-cards" id="classes-container">
+            <!-- Salas renderizadas dinamicamente pelo JS -->
+        </div>
+    </main>
+
+    <!-- TELA 3: AVALIAÇÃO -->
+    <main id="screen-eval" class="screen">
+        <button class="back-btn" onclick="navigation.goBackToClasses()">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Voltar para Turmas
+        </button>
+        
+        <div class="eval-container">
+            <div class="eval-header">
+                <h2 id="eval-title">Nome da Turma</h2>
+                <span id="eval-badge">Nível</span>
+            </div>
+            
+            <p style="color: var(--text-muted); font-size: 1.1rem;">Como você avalia o trabalho e a apresentação?</p>
+            
+            <!-- Sistema de 5 estrelas -->
+            <div class="stars" id="star-rating">
+                <span class="star" data-value="5">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="1">★</span>
+            </div>
+
+            <!-- NOVO CAMPO DE EMAIL -->
+            <div class="input-group" style="margin-bottom: 15px;">
+                <label for="user-email" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Seu E-mail (Obrigatório)</label>
+                <input type="email" id="user-email" placeholder="Digite seu e-mail" required style="width: 100%; padding: 12px; border: 2px solid #E5E7EB; border-radius: 8px; font-size: 1rem;">
+            </div>
+
+            <div class="input-group">
+                <label for="comment">Comentários e Sugestões (Opcional)</label>
+                <textarea id="comment" placeholder="O que você mais gostou? O que pode melhorar?"></textarea>
+            </div>
+            
+            <button class="submit-btn" id="btn-submit" onclick="appState.submitEvaluation()">Enviar Avaliação</button>
+        </div>
+    </main>
+
+    <!-- TELA 4: SUCESSO -->
+    <main id="screen-success" class="screen">
+        <div class="success-icon">✓</div>
+        <h2 style="color: var(--primary); margin-bottom: 15px; font-size: 2rem;">Avaliação Enviada!</h2>
+        <p style="font-size: 1.2rem; margin-bottom: 40px;">Muito obrigado pela sua contribuição.</p>
+        <button class="submit-btn" style="max-width: 300px;" onclick="navigation.restartApp()">Avaliar outra turma</button>
+    </main>
+
+    <!-- ========================================== -->
+    <!-- LÓGICA JAVASCRIPT                          -->
+    <!-- ========================================== -->
+
+    <script>
+        // --- CONFIGURAÇÃO: URL DO GOOGLE APPS SCRIPT ---
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydvz6uyxXPCBMA-sZQIK8hsQNZB8D7_nD3R6a1-VWmQTx2bYC2Bs_poKTLHIIqoDM/exec';
+
+        // --- BASE DE DADOS (Imagens geradas automaticamente como placeholders coloridos) ---
+        // Você pode trocar as URLs pelas imagens reais das turmas.
+        const dbData = {
+            levels: [
+                { id: 'infantil', name: 'Educação Infantil', img: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=500&q=80' },
+                { id: 'fund1', name: 'Ensino Fundamental 1', img: 'https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=500&q=80' },
+                { id: 'fund2', name: 'Ensino Fundamental 2', img: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=500&q=80' },
+                { id: 'medio', name: 'Ensino Médio', img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=500&q=80' }
+            ],
+            classes: {
+                'Educação Infantil': [
+                    { name: 'Maternal', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=Maternal' },
+                    { name: 'Jardim 1', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=Jardim+1' },
+                    { name: 'Jardim 2', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=Jardim+2' }
+                ],
+                'Ensino Fundamental 1': [
+                    { name: '1º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=1%C2%BA+Ano' },
+                    { name: '2º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=2%C2%BA+Ano' },
+                    { name: '3º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=3%C2%BA+Ano' },
+                    { name: '4º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=4%C2%BA+Ano' },
+                    { name: '5º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=5%C2%BA+Ano' }
+                ],
+                'Ensino Fundamental 2': [
+                    { name: '6º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=6%C2%BA+Ano' },
+                    { name: '7º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=7%C2%BA+Ano' },
+                    { name: '8º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=8%C2%BA+Ano' },
+                    { name: '9º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=9%C2%BA+Ano' }
+                ],
+                'Ensino Médio': [
+                    { name: '1ª Série', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=1%C2%AA+S%C3%A9rie' },
+                    { name: '2ª Série', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=2%C2%AA+S%C3%A9rie' },
+                    { name: '3ª Série', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=3%C2%AA+S%C3%A9rie' }
+                ]
+            }
+        };
+
+// --- ESTADO DA APLICAÇÃO ---
+const appState = {
+            selectedLevel: '',
+            selectedClass: '',
+            starsRating: 0,
+
+            // Ação: Selecionar o Nível
+            setLevel(levelName) {
+                this.selectedLevel = levelName;
+                uiRenderer.renderClasses(levelName);
+                navigation.showScreen('screen-classes', `Turmas - ${levelName}`);
+            },
+
+            // Ação: Selecionar a Sala
+            setClass(className) {
+                this.selectedClass = className;
+                this.starsRating = 0; // Reseta estrelas
+                uiRenderer.prepareEvalScreen(this.selectedLevel, className);
+                navigation.showScreen('screen-eval', 'Deixe sua avaliação');
+            },
+
+// Ação: Enviar Formulário para o Google Sheets
+submitEvaluation() {
+                const emailInput = document.getElementById('user-email').value.trim();
+                
+                // Validação de E-mail e Estrelas
+                if (!emailInput || !emailInput.includes('@')) {
+                    alert("Por favor, insira um e-mail válido para avaliar.");
+                    return;
+                }
+                if (this.starsRating === 0) {
+                    alert("Por favor, selecione uma nota de 1 a 5 estrelas.");
+                    return;
+                }
+
+                const comentarioText = document.getElementById('comment').value;
+                const btn = document.getElementById('btn-submit');
+                btn.innerText = "Enviando...";
+                btn.disabled = true;
+
+                // Prepara os dados incluindo o Email
+                const dataParams = new URLSearchParams();
+                dataParams.append('Nivel', this.selectedLevel);
+                dataParams.append('Sala', this.selectedClass);
+                dataParams.append('Estrelas', this.starsRating);
+                dataParams.append('Comentario', comentarioText);
+                dataParams.append('Email', emailInput);
+
+                const finalUrl = GOOGLE_SCRIPT_URL + '?' + dataParams.toString();
+
+                // Envio via Fetch API (Sem o 'no-cors' para podermos ler a resposta)
+                fetch(finalUrl, {
+                    method: 'POST'
+                })
+                .then(response => response.json()) // Transforma a resposta do Google em um objeto legível
+                .then(data => {
+                    // O Google Sheets respondeu que é duplicado
+                    if (data.result === 'duplicate_ignored') {
+                        alert("Aviso: O e-mail informado já enviou uma avaliação para esta turma. Não é possível avaliar duas vezes!");
+                        btn.innerText = "Enviar Avaliação";
+                        btn.disabled = false;
+                    } 
+                    // O Google Sheets respondeu que salvou com sucesso
+                    else if (data.result === 'success') {
+                        navigation.showScreen('screen-success', 'Avaliação Enviada');
+                        btn.innerText = "Enviar Avaliação";
+                        btn.disabled = false;
+                        
+                        // Limpa os campos para a próxima avaliação
+                        document.getElementById('user-email').value = ''; 
+                        document.getElementById('comment').value = ''; 
+                    } 
+                    else {
+                        throw new Error("Erro desconhecido no servidor.");
+                    }
+                })
+                .catch(error => {
+                    alert("Houve um erro ao enviar. Verifique sua conexão ou tente novamente.");
+                    console.error(error);
+                    btn.innerText = "Enviar Avaliação";
+                    btn.disabled = false;
+                });
+            }       
+         };
+        // --- SISTEMA DE NAVEGAÇÃO ---
+        const navigation = {
+            showScreen(screenId, subtitle) {
+                // Esconde todas as telas
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                // Mostra a tela alvo
+                document.getElementById(screenId).classList.add('active');
+                // Atualiza o subtítulo do cabeçalho
+                document.getElementById('header-subtitle').innerText = subtitle;
+            },
+            goBackToLevels() {
+                this.showScreen('screen-levels', 'Selecione o nível de ensino para começar');
+            },
+            goBackToClasses() {
+                this.showScreen('screen-classes', `Turmas - ${appState.selectedLevel}`);
+            },
+            restartApp() {
+                this.goBackToLevels();
+            }
+        };
+
+        // --- RENDERIZADOR DE INTERFACE (DOM) ---
+        const uiRenderer = {
+            // Inicializa a tela 1
+            init() {
+                const container = document.getElementById('levels-container');
+                dbData.levels.forEach(level => {
+                    const card = this.createCard(level.name, level.img, () => appState.setLevel(level.name));
+                    container.appendChild(card);
+                });
+                this.setupStars();
+            },
+
+            // Renderiza os cards das salas baseados no nível escolhido
+            renderClasses(levelName) {
+                const container = document.getElementById('classes-container');
+                container.innerHTML = ''; // Limpa as salas antigas
+                
+                const classes = dbData.classes[levelName];
+                classes.forEach(cls => {
+                    const card = this.createCard(cls.name, cls.img, () => appState.setClass(cls.name));
+                    container.appendChild(card);
+                });
+            },
+
+            // Cria os elementos HTML do Card
+            createCard(titleText, imgSrc, onClickCallback) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = onClickCallback;
+
+                const img = document.createElement('img');
+                img.className = 'card-img';
+                img.src = imgSrc;
+                img.alt = titleText;
+
+                const title = document.createElement('div');
+                title.className = 'card-title';
+                title.innerText = titleText;
+
+                card.appendChild(img);
+                card.appendChild(title);
+                return card;
+            },
+
+            // Limpa e prepara a tela de avaliação
+            prepareEvalScreen(level, cls) {
+                document.getElementById('eval-title').innerText = cls;
+                document.getElementById('eval-badge').innerText = level;
+                document.getElementById('comment').value = '';
+                document.querySelectorAll('.star').forEach(s => s.classList.remove('selected'));
+            },
+
+            // Configura a interatividade das estrelas
+            setupStars() {
+                document.querySelectorAll('.star').forEach(star => {
+                    star.addEventListener('click', function() {
+                        document.querySelectorAll('.star').forEach(s => s.classList.remove('selected'));
+                        this.classList.add('selected');
+                        appState.starsRating = parseInt(this.getAttribute('data-value'));
+                    });
+                });
+            }
+        };
+
+        // Inicializa o app quando a página carregar
+        window.onload = () => {
+            uiRenderer.init();
+        };
+
+    </script>
+</body>
+</html>
