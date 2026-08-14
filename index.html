@@ -88,7 +88,7 @@
 
     <script>
         // --- CONFIGURAÇÃO: URL DO GOOGLE APPS SCRIPT ---
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz54olInADm0tPsa5SufQ6UwmBa_M_3pCBa7chq9VoQr1srQf4xqp0AaIiUkPAllWvn6A/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcPDFgruI49MxgKzb7fdTvbWCdTDPZcRfMztBLih43rdC62e8AB9ADBSKKQFHvzyxqbQ/exec';
 
         // --- BASE DE DADOS (Imagens geradas automaticamente como placeholders coloridos) ---
         // Você pode trocar as URLs pelas imagens reais das turmas.
@@ -151,7 +151,6 @@ const appState = {
 submitEvaluation() {
                 const emailInput = document.getElementById('user-email').value.trim();
                 
-                // Validação de E-mail e Estrelas
                 if (!emailInput || !emailInput.includes('@')) {
                     alert("Por favor, insira um e-mail válido para avaliar.");
                     return;
@@ -166,7 +165,6 @@ submitEvaluation() {
                 btn.innerText = "Enviando...";
                 btn.disabled = true;
 
-                // Prepara os dados incluindo o Email
                 const dataParams = new URLSearchParams();
                 dataParams.append('Nivel', this.selectedLevel);
                 dataParams.append('Sala', this.selectedClass);
@@ -176,35 +174,44 @@ submitEvaluation() {
 
                 const finalUrl = GOOGLE_SCRIPT_URL + '?' + dataParams.toString();
 
-                // Envio via Fetch API (Sem o 'no-cors' para podermos ler a resposta)
                 fetch(finalUrl, {
                     method: 'GET'
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.result === 'duplicate_ignored') {
-                        alert("Aviso: O e-mail informado já enviou uma avaliação para esta turma. Não é possível avaliar duas vezes!");
+                .then(response => response.text()) // LÊ COMO TEXTO PRIMEIRO
+                .then(text => {
+                    try {
+                        const data = JSON.parse(text); // TENTA CONVERTER
+                        
+                        if (data.result === 'duplicate_ignored') {
+                            alert("Aviso: O e-mail informado já enviou uma avaliação para esta turma. Não é possível avaliar duas vezes!");
+                            btn.innerText = "Enviar Avaliação";
+                            btn.disabled = false;
+                        } 
+                        else if (data.result === 'success') {
+                            navigation.showScreen('screen-success', 'Avaliação Enviada');
+                            btn.innerText = "Enviar Avaliação";
+                            btn.disabled = false;
+                            document.getElementById('user-email').value = ''; 
+                            document.getElementById('comment').value = ''; 
+                        } 
+                        else {
+                            throw new Error(data.error || "Erro desconhecido no servidor.");
+                        }
+                    } catch (e) {
+                        // SE DER ERRO, VAI MOSTRAR EXATAMENTE O QUE O GOOGLE RESPONDEU
+                        console.error("O Google devolveu um erro em vez de JSON:", text);
+                        alert("Erro de conexão: O script do Google não foi atualizado corretamente. Veja o console.");
                         btn.innerText = "Enviar Avaliação";
                         btn.disabled = false;
-                    } 
-                    else if (data.result === 'success') {
-                        navigation.showScreen('screen-success', 'Avaliação Enviada');
-                        btn.innerText = "Enviar Avaliação";
-                        btn.disabled = false;
-                        document.getElementById('user-email').value = ''; 
-                        document.getElementById('comment').value = ''; 
-                    } 
-                    else {
-                        throw new Error("Erro desconhecido no servidor.");
                     }
                 })
                 .catch(error => {
                     alert("Houve um erro ao enviar. Verifique sua conexão ou tente novamente.");
-                    console.error(error);
+                    console.error("Erro no Fetch:", error);
                     btn.innerText = "Enviar Avaliação";
                     btn.disabled = false;
                 });
-            }       
+            }   
          };
         // --- SISTEMA DE NAVEGAÇÃO ---
         const navigation = {
