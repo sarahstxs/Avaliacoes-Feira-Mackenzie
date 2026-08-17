@@ -5,10 +5,10 @@
         // Você pode trocar as URLs pelas imagens reais das turmas.
         const dbData = {
             levels: [
-                { id: 'infantil', name: 'Educação Infantil', img: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=500&q=80' },
-                { id: 'fund1', name: 'Ensino Fundamental 1', img: 'https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=500&q=80' },
-                { id: 'fund2', name: 'Ensino Fundamental 2', img: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=500&q=80' },
-                { id: 'medio', name: 'Ensino Médio', img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=500&q=80' }
+                { id: 'infantil', name: 'Educação Infantil', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_sT41YDMlsJHHJlTS0SCMYenE80AAnv1KUNaayTdcLw&s=10' },
+                { id: 'fund1', name: 'Ensino Fundamental 1', img: 'https://cptstatic.s3.amazonaws.com/imagens/enviadas/materias/materia15208/como-deve-ser-o-curriculo-do-1-ano-do-ensino-fundamental-cpt6.jpg' },
+                { id: 'fund2', name: 'Ensino Fundamental 2', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNG0w1cLHHaiJBzgY-kUobbDLSEaZkpdB_h1OgI0THR0qTf-3xmWaKsiTS&s=10' },
+                { id: 'medio', name: 'Ensino Médio', img: 'https://blog.sesiescolas.fiemg.com.br/hubfs/Como%20%C3%A9%20a%20transi%C3%A7%C3%A3o%20do%20Ensino%20Fundamental%202%20para%20o%20M%C3%A9dio%3F%20blog.svg' }
             ],
             classes: {
                 'Educação Infantil': [
