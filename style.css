@@ -1,8 +1,8 @@
         /* Variáveis de Cores e Tema */
         :root {
-            --primary: #7C3AED;       /* Roxo Principal */
-            --primary-hover: #6D28D9; /* Roxo Escuro (Hover) */
-            --primary-light: #F3E8FF; /* Roxo Claro (Fundo de Imagens) */
+            --primary: #A21A17;       /* Roxo Principal */
+            --primary-hover: #e03633; /* Roxo Escuro (Hover) */
+            --primary-light: #e1b1a8; /* Roxo Claro (Fundo de Imagens) */
             --bg-color: #F9FAFB;      /* Fundo da Página */
             --text-main: #1F2937;     /* Texto Principal */
             --text-muted: #6B7280;    /* Texto Secundário */
@@ -250,14 +250,23 @@
         #screen-success {
             text-align: center;
             padding: 60px 20px;
+
         }
         
-        .success-icon {
-            font-size: 70px;
-            color: #10B981;
-            margin-bottom: 20px;
+        /* Container que centraliza a imagem à força */
+        .success-image-container {
+            display: flex;
+            justify-content: center; /* Centraliza na horizontal */
+            align-items: center; 
+            margin-bottom: 20px; /* Espaço entre a imagem e o título */
+            width: 100%;
+        }
+
+        /* Tamanho e animação da imagem */
+        .success-image-container img {
+            width: 500px; /* <--- Mude o tamanho aqui */
+            height: auto;
             animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            display: inline-block;
         }
 
         @keyframes popIn {
