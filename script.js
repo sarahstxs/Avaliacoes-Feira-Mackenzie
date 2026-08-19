@@ -10,19 +10,15 @@
             ],
             classes: {
                 'Educação Infantil': [
-                    { name: 'Maternal I', img: './img/Quem sou eu 1.png' },
-                    { name: 'Maternal II', img: './img/Quem sou eu 2.png' },
+                    { name: 'Maternal I e II', img: './img/Quem sou eu.png' },//! Olhar
                     { name: 'Jardim I', img: './img/Trajeto da escola.png' },
                     { name: 'Jardim II', img: './img/Amigos.png' }
                 ],
                 'Ensino Fundamental 1': [
                     { name: '1º Ano', img: './img/Detetive do tempo.png' },
-                    { name: '2º Ano A', img: './img/Animais e engenhocas 1.png' },
-                    { name: '2º Ano B', img: './img/Animais e engenhocas 2.png' },
-                    { name: '2º Ano C', img: './img/Animais e engenhocas 3.png' },
-                    { name: '3º Ano A', img: './img/Herois 1.png' },
+                    { name: '2º Ano A e B e C', img: './img/Animais.png' },
+                    { name: '3º Ano A e C', img: './img/Herois 1.png' },
                     { name: '3º Ano B', img: './img/Audicao.png' },
-                    { name: '3º Ano C', img: './img/Herois 2.png' },
                     { name: '4º Ano A', img: './img/Oceano.png' },
                     { name: '4º Ano B', img: './img/Abelhas.png' },
                     { name: '5º Ano A e B', img: './img/quinto.png' }
