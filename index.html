@@ -8,34 +8,25 @@
 </head>
 <body>
 
-    <!-- ========================================== -->
-    <!-- ESTRUTURA HTML                             -->
-    <!-- ========================================== -->
-
     <header>
-        <h1>Avaliação de Apresentações</h1>
-        <p id="header-subtitle">Selecione o nível de ensino para começar</p>
+        <h1>Feira Literária Colégio da Vila Mackenzie</h1>
+        <p id="header-subtitle">Selecione o nível de ensino para avaliar</p>
     </header>
 
-    <!-- TELA 1: NÍVEIS DE ENSINO -->
     <main id="screen-levels" class="screen active">
         <div class="grid-cards" id="levels-container">
-            <!-- Níveis renderizados dinamicamente pelo JS -->
         </div>
     </main>
 
-    <!-- TELA 2: SALAS/TURMAS -->
     <main id="screen-classes" class="screen">
         <button class="back-btn" onclick="navigation.goBackToLevels()">
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
             Voltar para Níveis
         </button>
         <div class="grid-cards" id="classes-container">
-            <!-- Salas renderizadas dinamicamente pelo JS -->
         </div>
     </main>
 
-    <!-- TELA 3: AVALIAÇÃO -->
     <main id="screen-eval" class="screen">
         <button class="back-btn" onclick="navigation.goBackToClasses()">
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
@@ -50,7 +41,6 @@
             
             <p style="color: var(--text-muted); font-size: 1.1rem;">Como você avalia o trabalho e a apresentação?</p>
             
-            <!-- Sistema de 5 estrelas -->
             <div class="stars" id="star-rating">
                 <span class="star" data-value="5">★</span>
                 <span class="star" data-value="4">★</span>
@@ -59,7 +49,6 @@
                 <span class="star" data-value="1">★</span>
             </div>
 
-            <!-- NOVO CAMPO DE EMAIL -->
             <div class="input-group" style="margin-bottom: 15px;">
                 <label for="user-email" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Seu E-mail (Obrigatório)</label>
                 <input type="email" id="user-email" placeholder="Digite seu e-mail" required style="width: 100%; padding: 12px; border: 2px solid #E5E7EB; border-radius: 8px; font-size: 1rem;">
@@ -74,23 +63,16 @@
         </div>
     </main>
 
-    <!-- TELA 4: SUCESSO -->
     <main id="screen-success" class="screen">
     
-        <!-- COLE ISSO AQUI: -->
         <div class="success-image-container">
-            <img src="colegio.png" alt="Sucesso">
+            <img src="./img/colegio.png" alt="Sucesso">
         </div>
-        <!-- ================== -->
     
         <h2 style="color: var(--primary); margin-bottom: 15px; font-size: 2rem;">Avaliação Enviada!</h2>
         <p style="font-size: 1.2rem; margin-bottom: 40px;">O colégio Mackenzie da vila agradece sua presença</p>
         <button class="submit-btn" style="max-width: 300px;" onclick="navigation.restartApp()">Avaliar outra turma</button>
     </main>
-
-    <!-- ========================================== -->
-    <!-- LÓGICA JAVASCRIPT                          -->
-    <!-- ========================================== -->
 
     <script src="script.js"></script>
 </body>

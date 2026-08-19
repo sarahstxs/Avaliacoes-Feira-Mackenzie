@@ -1,8 +1,7 @@
-        /* Variáveis de Cores e Tema */
         :root {
-            --primary: #A21A17;       /* Roxo Principal */
-            --primary-hover: #e03633; /* Roxo Escuro (Hover) */
-            --primary-light: #e1b1a8; /* Roxo Claro (Fundo de Imagens) */
+            --primary: #A21A17;       /* Vermelho Principal */
+            --primary-hover: #e03633; /* VErmelho Escuro (Hover) */
+            --primary-light: #e1b1a8; /* Vermelho Claro (Fundo de Imagens) */
             --bg-color: #F9FAFB;      /* Fundo da Página */
             --text-main: #1F2937;     /* Texto Principal */
             --text-muted: #6B7280;    /* Texto Secundário */
@@ -11,7 +10,7 @@
             --star-filled: #F59E0B;   /* Cor da Estrela Preenchida */
         }
 
-        /* Reset Básico */
+        /* Reset Básico */ 
         * {
             box-sizing: border-box;
             margin: 0;
@@ -49,7 +48,6 @@
             font-size: 1.1rem;
         }
 
-        /* Configuração das Telas e Animações */
         .screen {
             display: none;
             width: 100%;
@@ -87,7 +85,7 @@
             background-color: var(--primary-light);
         }
 
-        /* Cards Universais (Usados para Níveis e Salas) */
+        /* Cards Universais */
         .grid-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -180,7 +178,6 @@
             transform: scale(1.1);
         }
 
-        /* Efeito de preenchimento das estrelas via hover e seleção */
         .stars > .star:hover,
         .stars > .star:hover ~ .star,
         .stars > .star.selected,
@@ -253,7 +250,6 @@
 
         }
         
-        /* Container que centraliza a imagem à força */
         .success-image-container {
             display: flex;
             justify-content: center; /* Centraliza na horizontal */
@@ -262,15 +258,8 @@
             width: 100%;
         }
 
-        /* Tamanho e animação da imagem */
         .success-image-container img {
-            width: 300px; /* <--- Mude o tamanho aqui */
+            width: 300px; 
             height: auto;
             animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-
-        @keyframes popIn {
-            0% { transform: scale(0); }
-            100% { transform: scale(1); }
-        }
-

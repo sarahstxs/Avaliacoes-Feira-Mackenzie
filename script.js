@@ -1,8 +1,6 @@
-        // --- CONFIGURAÇÃO: URL DO GOOGLE APPS SCRIPT ---
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcPDFgruI49MxgKzb7fdTvbWCdTDPZcRfMztBLih43rdC62e8AB9ADBSKKQFHvzyxqbQ/exec';
 
-        // --- BASE DE DADOS (Imagens geradas automaticamente como placeholders coloridos) ---
-        // Você pode trocar as URLs pelas imagens reais das turmas.
+
         const dbData = {
             levels: [
                 { id: 'infantil', name: 'Educação Infantil', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_sT41YDMlsJHHJlTS0SCMYenE80AAnv1KUNaayTdcLw&s=10' },
@@ -12,27 +10,34 @@
             ],
             classes: {
                 'Educação Infantil': [
-                    { name: 'Maternal', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=Maternal' },
-                    { name: 'Jardim 1', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=Jardim+1' },
-                    { name: 'Jardim 2', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=Jardim+2' }
+                    { name: 'Maternal I', img: './img/Quem sou eu 1.png' },
+                    { name: 'Maternal II', img: './img/Quem sou eu 2.png' },
+                    { name: 'Jardim I', img: './img/Trajeto da escola.png' },
+                    { name: 'Jardim II', img: './img/Amigos.png' }
                 ],
                 'Ensino Fundamental 1': [
-                    { name: '1º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=1%C2%BA+Ano' },
-                    { name: '2º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=2%C2%BA+Ano' },
-                    { name: '3º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=3%C2%BA+Ano' },
-                    { name: '4º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=4%C2%BA+Ano' },
-                    { name: '5º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=5%C2%BA+Ano' }
+                    { name: '1º Ano', img: './img/Detetive do tempo.png' },
+                    { name: '2º Ano A', img: './img/Animais e engenhocas 1.png' },
+                    { name: '2º Ano B', img: './img/Animais e engenhocas 2.png' },
+                    { name: '2º Ano C', img: './img/Animais e engenhocas 3.png' },
+                    { name: '3º Ano A', img: './img/Herois 1.png' },
+                    { name: '3º Ano B', img: './img/Audicao.png' },
+                    { name: '3º Ano C', img: './img/Herois 2.png' },
+                    { name: '4º Ano A', img: './img/Oceano.png' },
+                    { name: '4º Ano B', img: './img/Abelhas.png' },
+                    { name: '5º Ano A e B', img: './img/quinto.png' }
                 ],
                 'Ensino Fundamental 2': [
-                    { name: '6º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=6%C2%BA+Ano' },
-                    { name: '7º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=7%C2%BA+Ano' },
-                    { name: '8º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=8%C2%BA+Ano' },
-                    { name: '9º Ano', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=9%C2%BA+Ano' }
+                    { name: '6º Ano A', img: './img/cora.png' },
+                    { name: '6º Ano B', img: './img/Hospedaria.png' },
+                    { name: '7º Ano', img: './img/castro.png' },
+                    { name: '8º Ano', img: './img/meireles.png' },
+                    { name: '9º Ano', img: './img/Paulo.png' }
                 ],
                 'Ensino Médio': [
-                    { name: '1ª Série', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=1%C2%AA+S%C3%A9rie' },
-                    { name: '2ª Série', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=2%C2%AA+S%C3%A9rie' },
-                    { name: '3ª Série', img: 'https://placehold.co/400x250/F3E8FF/7C3AED?text=3%C2%AA+S%C3%A9rie' }
+                    { name: '1ª Série', img: './img/carlos.png' },
+                    { name: '2ª Série', img: './img/periferica.png' },
+                    { name: '3ª Série', img: './img/cordel.png' }
                 ]
             }
         };
@@ -43,14 +48,12 @@ const appState = {
             selectedClass: '',
             starsRating: 0,
 
-            // Ação: Selecionar o Nível
             setLevel(levelName) {
                 this.selectedLevel = levelName;
                 uiRenderer.renderClasses(levelName);
                 navigation.showScreen('screen-classes', `Turmas - ${levelName}`);
             },
 
-            // Ação: Selecionar a Sala
             setClass(className) {
                 this.selectedClass = className;
                 this.starsRating = 0; // Reseta estrelas
@@ -58,7 +61,7 @@ const appState = {
                 navigation.showScreen('screen-eval', 'Deixe sua avaliação');
             },
 
-// Ação: Enviar Formulário para o Google Sheets
+// Enviar Formulário para o Google Sheets
 submitEvaluation() {
                 const emailInput = document.getElementById('user-email').value.trim();
                 
@@ -88,10 +91,10 @@ submitEvaluation() {
                 fetch(finalUrl, {
                     method: 'GET'
                 })
-                .then(response => response.text()) // LÊ COMO TEXTO PRIMEIRO
+                .then(response => response.text()) 
                 .then(text => {
                     try {
-                        const data = JSON.parse(text); // TENTA CONVERTER
+                        const data = JSON.parse(text); 
                         
                         if (data.result === 'duplicate_ignored') {
                             alert("Aviso: O e-mail informado já enviou uma avaliação para esta turma. Não é possível avaliar duas vezes!");
@@ -109,7 +112,6 @@ submitEvaluation() {
                             throw new Error(data.error || "Erro desconhecido no servidor.");
                         }
                     } catch (e) {
-                        // SE DER ERRO, VAI MOSTRAR EXATAMENTE O QUE O GOOGLE RESPONDEU
                         console.error("O Google devolveu um erro em vez de JSON:", text);
                         alert("Erro de conexão: O script do Google não foi atualizado corretamente. Veja o console.");
                         btn.innerText = "Enviar Avaliação";
@@ -124,7 +126,6 @@ submitEvaluation() {
                 });
             }   
          };
-        // --- SISTEMA DE NAVEGAÇÃO ---
         const navigation = {
             showScreen(screenId, subtitle) {
                 // Esconde todas as telas
@@ -145,7 +146,6 @@ submitEvaluation() {
             }
         };
 
-        // --- RENDERIZADOR DE INTERFACE (DOM) ---
         const uiRenderer = {
             // Inicializa a tela 1
             init() {
@@ -157,7 +157,6 @@ submitEvaluation() {
                 this.setupStars();
             },
 
-            // Renderiza os cards das salas baseados no nível escolhido
             renderClasses(levelName) {
                 const container = document.getElementById('classes-container');
                 container.innerHTML = ''; // Limpa as salas antigas
@@ -189,7 +188,6 @@ submitEvaluation() {
                 return card;
             },
 
-            // Limpa e prepara a tela de avaliação
             prepareEvalScreen(level, cls) {
                 document.getElementById('eval-title').innerText = cls;
                 document.getElementById('eval-badge').innerText = level;
@@ -197,7 +195,7 @@ submitEvaluation() {
                 document.querySelectorAll('.star').forEach(s => s.classList.remove('selected'));
             },
 
-            // Configura a interatividade das estrelas
+            // Interatividade das estrelas
             setupStars() {
                 document.querySelectorAll('.star').forEach(star => {
                     star.addEventListener('click', function() {
