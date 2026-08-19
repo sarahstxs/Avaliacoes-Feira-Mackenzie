@@ -10,7 +10,7 @@
             ],
             classes: {
                 'Educação Infantil': [
-                    { name: 'Maternal I e II', img: './img/Quem sou eu.png' },//! Olhar
+                    { name: 'Maternal I e II', img: './img/Quem sou eu.png' },
                     { name: 'Jardim I', img: './img/Trajeto da escola.png' },
                     { name: 'Jardim II', img: './img/Amigos.png' }
                 ],
