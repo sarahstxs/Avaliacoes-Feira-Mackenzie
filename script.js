@@ -16,7 +16,8 @@
                 ],
                 'Ensino Fundamental 1': [
                     { name: '1º Ano', img: './img/Detetive do tempo.png' },
-                    { name: '2º Ano A e B e C', img: './img/Animais.png' },
+                    { name: '2º Ano A e B', img: './img/Animais.png' },
+                    { name: '2º Ano C', img: './img/plantas.png' },
                     { name: '3º Ano A e C', img: './img/Herois 1.png' },
                     { name: '3º Ano B', img: './img/Audicao.png' },
                     { name: '4º Ano A', img: './img/Oceano.png' },
