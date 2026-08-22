@@ -29,7 +29,8 @@
                     { name: '6º Ano B', img: './img/Hospedaria.png' },
                     { name: '7º Ano', img: './img/castro.png' },
                     { name: '8º Ano', img: './img/meireles.png' },
-                    { name: '9º Ano', img: './img/Paulo.png' }
+                    { name: '9º Ano A', img: './img/Paulo.png' },
+                    { name: '9º Ano B', img: './img/Machado.png' }
                 ],
                 'Ensino Médio': [
                     { name: '1ª Série', img: './img/carlos.png' },
